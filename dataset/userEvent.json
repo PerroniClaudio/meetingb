@@ -1,0 +1,249 @@
+{
+    "id": "",
+    "errors": 0,
+    "error_type": "",
+    "error_message": "",
+    "events": [
+        {
+            "mid": "34568",
+            "subject": "test 1 attendees",
+            "description": "",
+            "start_date": "2022-09-29 11:45:00",
+            "end_date": "2022-09-29 12:00:00",
+            "user": "21",
+            "state": "0",
+            "attendees" : [
+                "c.perroni@ifortech.com",
+                "prova@ifortech.com"
+            ],
+            "related": [],
+            "room": {
+                "rid": "1",
+                "name": "Dubai",
+                "type": "Sala Riunioni",
+                "description": "Sala Grande Monza",
+                "building": {
+                    "bid": "1",
+                    "name": "Sede Operativa IFT"
+                }
+            }
+        },
+        {
+            "mid": "34569",
+            "subject": "test 2",
+            "description": "",
+            "start_date": "2022-09-29 12:00:00",
+            "end_date": "2022-09-29 12:15:00",
+            "user": "21",
+            "state": "0", 
+            "attendees" : [
+                "c.perroni@ifortech.com"
+            ],
+            "related": [],
+            "room": {
+                "rid": "1",
+                "name": "Dubai",
+                "type": "Sala Riunioni",
+                "description": "Sala Grande Monza",
+                "building": {
+                    "bid": "1",
+                    "name": "Sede Operativa IFT"
+                }
+            }
+        },
+        {
+            "mid": "34570",
+            "subject": "test 3",
+            "description": "",
+            "start_date": "2022-09-29 12:15:00",
+            "end_date": "2022-09-29 12:30:00",
+            "user": "21",
+            "state": "0", "attendees" : [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+            ],
+            "related": [],
+            "room": {
+                "rid": "1",
+                "name": "Dubai",
+                "type": "Sala Riunioni",
+                "description": "Sala Grande Monza",
+                "building": {
+                    "bid": "1",
+                    "name": "Sede Operativa IFT"
+                }
+            }
+        },
+        {
+            "mid": "34571",
+            "subject": "test 4",
+            "description": "",
+            "start_date": "2022-09-29 12:30:00",
+            "end_date": "2022-09-29 12:45:00",
+            "user": "21",
+            "state": "0", "attendees" : [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+            ],
+            "related": [],
+            "room": {
+                "rid": "1",
+                "name": "Dubai",
+                "type": "Sala Riunioni",
+                "description": "Sala Grande Monza",
+                "building": {
+                    "bid": "1",
+                    "name": "Sede Operativa IFT"
+                }
+            }
+        },
+        {
+            "mid": "34564",
+            "subject": "Prova postman recurrent",
+            "description": "Prova postman recurrent",
+            "start_date": "2022-10-21 15:30:00",
+            "end_date": "2022-10-21 16:30:00",
+            "user": "21",
+            "state": "0", "attendees" : [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+            ],
+            "related": [
+                {
+                    "mid": "34564",
+                    "start_date": "2022-10-21 15:30:00"
+                },
+                {
+                    "mid": "34565",
+                    "start_date": "2022-11-18 15:30:00"
+                }
+            ],
+            "room": {
+                "rid": "4",
+                "name": "Roma",
+                "type": "Phone Booth",
+                "description": "",
+                "building": {
+                    "bid": "1",
+                    "name": "Sede Operativa IFT"
+                }
+            }
+        },
+        {
+            "mid": "34558",
+            "subject": "Prova postman recurrent",
+            "description": "Prova postman recurrent",
+            "start_date": "2022-10-22 15:30:00",
+            "end_date": "2022-10-22 16:30:00",
+            "user": "21",
+            "state": "0", "attendees" : [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+            ],
+            "related": [
+                {
+                    "mid": "34558",
+                    "start_date": "2022-10-22 15:30:00"
+                },
+                {
+                    "mid": "34559",
+                    "start_date": "2022-11-22 15:30:00"
+                }
+            ],
+            "room": {
+                "rid": "4",
+                "name": "Roma",
+                "type": "Phone Booth",
+                "description": "",
+                "building": {
+                    "bid": "1",
+                    "name": "Sede Operativa IFT"
+                }
+            }
+        },
+        {
+            "mid": "34565",
+            "subject": "Prova postman recurrent",
+            "description": "Prova postman recurrent",
+            "start_date": "2022-11-18 15:30:00",
+            "end_date": "2022-11-18 16:30:00",
+            "user": "21",
+            "state": "0", "attendees" : [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+            ],
+            "related": [
+                {
+                    "mid": "34564",
+                    "start_date": "2022-10-21 15:30:00"
+                },
+                {
+                    "mid": "34565",
+                    "start_date": "2022-11-18 15:30:00"
+                }
+            ],
+            "room": {
+                "rid": "4",
+                "name": "Roma",
+                "type": "Phone Booth",
+                "description": "",
+                "building": {
+                    "bid": "1",
+                    "name": "Sede Operativa IFT"
+                }
+            }
+        },
+        {
+            "mid": "34559",
+            "subject": "Prova postman recurrent",
+            "description": "Prova postman recurrent",
+            "start_date": "2022-11-22 15:30:00",
+            "end_date": "2022-11-22 16:30:00",
+            "user": "21",
+            "state": "0",
+             "attendees" : [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+            ],
+            "related": [
+                {
+                    "mid": "34558",
+                    "start_date": "2022-10-22 15:30:00"
+                },
+                {
+                    "mid": "34559",
+                    "start_date": "2022-11-22 15:30:00"
+                }
+            ],
+            "room": {
+                "rid": "4",
+                "name": "Roma",
+                "type": "Phone Booth",
+                "description": "",
+                "building": {
+                    "bid": "1",
+                    "name": "Sede Operativa IFT"
+                }
+            }
+        }
+        
+    ]
+}
