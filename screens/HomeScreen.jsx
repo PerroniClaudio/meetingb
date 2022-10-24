@@ -46,7 +46,7 @@ const HomeScreen = () => {
       <FlatList
         data={userEvents}
         renderItem={(element) => {
-          return <UserEventRow day={element.item} />;
+          return <UserEventRow day={element.item} withBorder={true}/>;
         }}
         keyExtractor={(item, index) => {
           return index;

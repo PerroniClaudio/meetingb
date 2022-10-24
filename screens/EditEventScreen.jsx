@@ -20,7 +20,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import AttendeeRow from "../components/AttendeeRow";
+
 
 const EditEventScreen = () => {
   const { params } = useRoute();
@@ -286,6 +286,7 @@ const EditEventScreen = () => {
 
   return (
     <View className="h-full">
+
       <View className="bg-white flex-row items-center justify-between pt-8 pb-4 px-4">
         <TouchableOpacity
           className="bg-gray-100 justify-center items-center p-3 rounded-full"
@@ -304,7 +305,7 @@ const EditEventScreen = () => {
 
       <ScrollView className="bg-white">
         <View className="px-4 mb-2">
-          <Text className="text-xl font-bold mb-2">Soggetto</Text>
+          <Text className="text-xl font-bold mb-2">Oggetto</Text>
           <TextInput
             className="p-4 rounded border border-gray-200"
             name={"subject"}
@@ -330,7 +331,7 @@ const EditEventScreen = () => {
         <View className="px-4 mb-2">
           <Text className="text-xl font-bold mb-2">Stanza</Text>
           <Pressable className="p-4 rounded border border-gray-200 w-full">
-            <Text>{eventData.room}</Text>
+            <Text>{eventData.room.name} - {eventData.room.building.name}</Text>
           </Pressable>
         </View>
 
@@ -424,6 +425,7 @@ const EditEventScreen = () => {
           </View>
         </View>
       </Modal>
+      
     </View>
   );
 };

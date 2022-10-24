@@ -30,6 +30,7 @@ const EventScreen = () => {
     .toLocaleDateString("it-IT", options)
     .split(" ");
 
+
   return (
     <View className="h-full">
       <View className="bg-white flex-row items-center justify-between pt-8 pb-4 px-4">
