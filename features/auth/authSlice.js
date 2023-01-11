@@ -39,7 +39,7 @@ export const authSlice = createSlice ({
             state.message = ''
         },
         initUser: (state, user) => {
-            state.user = user
+            state.user = user.payload
         }
     }, 
     extraReducers: (builder) => {

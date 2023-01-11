@@ -41,7 +41,7 @@ const CalendarDayScreen = () => {
                 <TouchableOpacity
                     className="bg-gray-100 justify-center items-center p-3 rounded-full "
                     onPress={ () => navigation.navigate("NewEvent", {
-                        "start_date" : `${params.start_date} ${getHMS(new Date())}`
+                        "start_date" : `${params.date} ${getHMS(new Date())}`
                     }) }
                 >
                     <PlusIcon color="#00e676" size={20} />

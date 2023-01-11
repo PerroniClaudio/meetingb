@@ -24,7 +24,7 @@ const login = async ( userData ) => {
 
 }
 
-const logout = () => localStorage.removeItem('user')
+const logout = () => setDataByKey('user', null)
 
 
 const getDataByKey = async (key) => {

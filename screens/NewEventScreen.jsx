@@ -1,4 +1,4 @@
-import {
+  import {
     View,
     Text,
     TouchableOpacity,
@@ -7,6 +7,7 @@ import {
     Platform,
     Pressable,
     Modal,
+    FlatList
   } from "react-native";
   import React from "react";
   
@@ -16,17 +17,22 @@ import {
     PlusIcon,
     XMarkIcon,
   } from "react-native-heroicons/solid";
+
+  import Spinner from "../components/Spinner";
+  import Toast from 'react-native-toast-message';
+
   import { useNavigation, useRoute } from "@react-navigation/native";
   import { useEffect, useState } from "react";
   
   import DateTimePickerModal from "react-native-modal-datetime-picker";
+
+  import { newEvent , resetSettings } from '../features/events/eventSlice'
+  import { useDispatch, useSelector } from "react-redux";
   
   
   const NewEventScreen = () => {
 
     const { params } = useRoute()
-    
-    console.log(params)
 
     const navigation = useNavigation();
   
@@ -45,21 +51,30 @@ import {
     });
 
     const [eventDate, setEventDate] = useState(new Date(params.start_date));
-    const [eventEndDate, setEventEndDate] = useState(new Date(params.start_date));
-    const [eventStartDate, setEventStartDate] = useState(new Date(params.start_date));
+    const [eventEndDate, setEventEndDate] = useState(roundToNearest5(new Date(params.start_date)));
+    const [eventStartDate, setEventStartDate] = useState(roundToNearest5(new Date(params.start_date)));
   
     const [showStartDateTimePicker, setShowStartDateTimePicker] = useState(false);
     const [showStartTimePicker, setShowStartTimePicker] = useState(false);
     const [showEndTimePicker, setShowEndTimePicker] = useState(false);
   
+    
     const [showAttendeeModal, setShowAttendeeModal] = useState(false);
     const [attendeesToAdd, setAttendeesToAdd] = useState([]);
     const [attendeesShowError, setAttendeesShowError] = useState(false);
     const [attendeeTextValue, setAttendeeTextValue] = useState("");
-    
+
+    const [showRoomModal, setShowRoomModal] = useState(false);
+    const [selectedRoom, setSelectedRoom] = useState({})
+
+    const dispatch = useDispatch()
+    const {isLoading, isError, isSuccess, message} = useSelector(state => state.events)
+
+    const {user} = useSelector(state => state.user)
 
   
     const handleOnChange = (field, value) => {
+
       setEventData((prevState) => ({
         ...prevState,
         [field]: value,
@@ -82,19 +97,35 @@ import {
     };
   
     const handleChangeDate = (e) => {
+
+      const approximateTime = (time) => {
+
+        const round5 = (x) => {
+          return Math.ceil(x/5)*5;
+        }
+
+        const split = time.split(":")
+        let newTime = `${split[0]}:${round5(split[1])}:00`
+
+        return newTime
+      }
+
       switch (e.target.id) {
         case "start-time-input":
           setEventStartDate((prevState) => {
             let ymd = getYMD(prevState);
-            return new Date(`${ymd} ${e.target.value}`);
+            let newTime = approximateTime(e.target.value)
+
+            return new Date(`${ymd} ${newTime}`);
           });
   
           break;
         case "end-time-input":
           setEventEndDate((prevState) => {
             let ymd = getYMD(prevState);
-  
-            return new Date(`${ymd} ${e.target.value}`);
+            let newTime = approximateTime(e.target.value)
+
+            return new Date(`${ymd} ${newTime}`);
           });
   
           break;
@@ -296,6 +327,51 @@ import {
       setShowAttendeeModal(false);
       setAttendeesToAdd([]);
     };
+
+    const handlePressNew = () => {
+
+      const eventUpload = {
+        "subject": eventData.subject,
+        "description": eventData.description,
+        "rid": eventData.room.rid,
+        "start_date" : getCurrentTimestamp(eventStartDate),
+        "end_date" : getCurrentTimestamp(eventEndDate),
+        "emails": eventData.attendees.length > 0 ? JSON.stringify(eventData.attendees) : "[]"
+      }
+
+
+      dispatch(newEvent(eventUpload))
+    }
+
+    const changeRoom = () => {
+      setEventData((prevState) => ({
+        ...prevState,
+        ['room']: selectedRoom,
+      }));
+
+      setShowRoomModal(false)
+    }
+
+    useEffect(() => {
+      if(isError) {
+        Toast.show({
+          type: 'error',
+          text1: 'Errore',
+          text2: message
+        });
+      }
+
+      if(isSuccess) {
+        navigation.goBack()
+      }
+    
+      dispatch(resetSettings())
+  
+    }, [isError, isSuccess, message])
+
+    if( isLoading ) {
+      return <Spinner />
+    }
   
     return (
       <View className="h-full">
@@ -310,7 +386,7 @@ import {
   
           <TouchableOpacity
             className="bg-gray-100 justify-center items-center p-3 rounded-full "
-            onPress={navigation.goBack}
+            onPress={() => handlePressNew()}
           >
             <ArrowDownTrayIcon color="#00e676" size={20} />
           </TouchableOpacity>
@@ -343,7 +419,7 @@ import {
   
           <View className="px-4 mb-2">
             <Text className="text-xl font-bold mb-2">Stanza</Text>
-            <Pressable className="p-4 rounded border border-gray-200 w-full">
+            <Pressable className="p-4 rounded border border-gray-200 w-full" onPress={() => setShowRoomModal(true)}>
               <Text>{eventData.room.name} - {eventData.room.building.name}</Text>
             </Pressable>
           </View>
@@ -438,6 +514,45 @@ import {
             </View>
           </View>
         </Modal>
+
+        <Modal
+          visible={showRoomModal}
+          animationType="fade"
+          transparent={true}
+          onRequestClose={() => setShowRoomModal(false)}
+        >
+          <View className="flex-1 justify-center items-center bg-[#00000053] ">
+            <View className="bg-white p-4 rounded w-10/12 lg:w-1/2">
+              <Text className="text-xl font-bold">Stanza</Text>
+              <FlatList
+                data={user.rooms}
+                renderItem={(element) => {
+
+                  let room = element.item
+
+
+                  return <TouchableOpacity className={`mb-2 p-4 rounded border ` + (selectedRoom.rid == room.rid ? 'border-[#00e676]' : 'border-gray-200') } onPress={() => setSelectedRoom(room) }>
+                    <Text>{room.name} - {room.building.name}</Text>
+                  </TouchableOpacity>;
+                }}
+                keyExtractor={(item, index) => {
+                  return index;
+                }}
+                showsVerticalScrollIndicator={false}
+                className="bg-red"
+              />
+
+              <TouchableOpacity
+                className="bg-[#00e676] p-3 rounded-full"
+                onPress={changeRoom}
+              >
+                <Text className="font-bold text-white text-center">Conferma</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        
         
       </View>
     );
@@ -467,6 +582,9 @@ import {
   };
   
   const getHMS = (date) => {
+
+
+
     const leadingzero = (n) => {
       if (n < 10) {
         return `0${n}`;
@@ -487,6 +605,8 @@ import {
   };
   
   const getYMD = (date) => {
+
+
     const leadingzero = (n) => {
       if (n < 10) {
         return `0${n}`;
@@ -509,6 +629,15 @@ import {
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   }
+
+  function roundToNearest5(date = new Date()) {
+    const minutes = 5;
+    const ms = 1000 * 60 * minutes;
+  
+    // 👇️ replace Math.round with Math.ceil to always round UP
+    return new Date(Math.round(date.getTime() / ms) * ms);
+  }
+  
   
   export default NewEventScreen;
   

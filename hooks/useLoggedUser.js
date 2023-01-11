@@ -2,6 +2,7 @@ import { useState, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { initUser } from '../features/auth/authSlice' 
+import { getActiveUserData } from '../features/user/userSlice'
 
 
 export const useLoggedUser = () => {
@@ -26,6 +27,7 @@ export const useLoggedUser = () => {
     
           if(user != null) {
             dispatch(initUser(user))
+            dispatch(getActiveUserData(user.token))
           }
     
         }

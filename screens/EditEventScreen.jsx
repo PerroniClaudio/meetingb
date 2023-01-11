@@ -21,6 +21,9 @@ import { useEffect, useState } from "react";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
+import { editEvent , reset } from '../features/events/eventSlice'
+import { useDispatch, useSelector } from "react-redux";
+
 
 const EditEventScreen = () => {
   const { params } = useRoute();
@@ -39,6 +42,9 @@ const EditEventScreen = () => {
   const [attendeesToAdd, setAttendeesToAdd] = useState([]);
   const [attendeesShowError, setAttendeesShowError] = useState(false);
   const [attendeeTextValue, setAttendeeTextValue] = useState("");
+
+  const dispatch = useDispatch()
+  const {isLoading} = useSelector(state => state.events)
 
   useEffect(() => {
     setEventDate(new Date(params.start_date));
@@ -284,6 +290,11 @@ const EditEventScreen = () => {
     setAttendeesToAdd([]);
   };
 
+  const handlePressEdit = () => {
+    
+    dispatch(editEvent(eventData))
+  }
+
   return (
     <View className="h-full">
 
@@ -297,7 +308,7 @@ const EditEventScreen = () => {
 
         <TouchableOpacity
           className="bg-gray-100 justify-center items-center p-3 rounded-full "
-          onPress={navigation.goBack}
+          onPress={() => handlePressEdit()}
         >
           <ArrowDownTrayIcon color="#00e676" size={20} />
         </TouchableOpacity>
